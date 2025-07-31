@@ -38,19 +38,22 @@ List tools or concepts used. For example:
 
 ## 🛠️ Step-by-step Solution
 
-```bash
-# Step 1: Download the file
-downloaded jail.py
+### Step 1: Download the file
 
-# Step 2: Inspect the file
-nvim jail.py
+`downloaded jail.py`
 
-# Step 3: Understand the code
+### Step 2: Inspect the file
+
+`nvim jail.py`
+
+### Step 3: Understand the code
+
 Right off the bat, it is evident that our user input has limited sanitation which is vulnerable.
 
 `hax = input(">" )`
 
-Furthermore, stdin is closd right after the input so this prevents interactive input once the code is running, meaning we cannot use input() if necessary.
+Furthermore, stdin is closd right after the input so this prevents interactive input
+once the code is running, meaning we cannot use input() if necessary.
 
 The variable `hax` has the following checks:
 
@@ -59,21 +62,25 @@ The variable `hax` has the following checks:
 
 The confiscated tools are: ['os', 'import', 'flag', 'system']
 
-Once the `hax` string is filtered, it is reassigned to the variable `code`. 
+Once the `hax` string is filtered, it is reassigned to the variable `code`.
 
-`code` wraps the user input in a triple-quoted string, which basically allows for multi-line input.
+`code` wraps the user input in a triple-quoted string, which basically
+allows for multi-line input.
 
-Additionally, it also applies strip to remove any leading or trailing whitespaces, including newlines.
+Additionally, it also applies strip to remove any leading or trailing whitespaces, including
+newlines.
 
-After this, `code` is passed to the Python interpreter using:
+After this, `code` is passed
+to the Python interpreter using:
 
 `os.execv(sys.executable, [sys.executable, '-c', code])`
 
 This line basically replaces the current process with a new one that runs the Python interpreter with the provided code.
 
-# Step 4: Find flag location 
+### Step 4: Find flag location
 
-I am not really familiar with Python, so I was not really sure how to find where the flag is. I relied on the Dockerfile that was provided to find the flag.
+I am not really familiar with Python, so I was not really sure how to find where the flag is.
+I relied on the Dockerfile that was provided to find the flag.
 
 `COPY flag.txt /srv/app/`
 
@@ -81,7 +88,7 @@ With this in mind, we can assume that the flag is located at the current working
 
 Usually, we can also list the contents of the directory using listdir if possible.
 
-# Step 5: Solution 
+### Step 5: Solution
 
 To put it simply, we just need to inject a short line of code that will print the flag given our limitations.
 
@@ -91,5 +98,4 @@ The payload I used to inject is:
 
 ```python
 print(open('fla' + chr(103) + '.txt').read())
-
 ```
